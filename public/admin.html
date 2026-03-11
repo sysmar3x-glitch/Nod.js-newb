@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Panel</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#0f0f0f;
+color:white;
+margin:0;
+padding:30px;
+}
+
+.container{
+max-width:600px;
+margin:auto;
+background:#1b1b1b;
+padding:20px;
+border-radius:10px;
+}
+
+h2{
+text-align:center;
+}
+
+input,textarea{
+width:100%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+margin-top:15px;
+padding:12px;
+width:100%;
+background:#00ffae;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+background:#00d494;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Upload APK</h2>
+
+<input id="name" placeholder="App Name">
+
+<input id="icon" placeholder="Icon URL">
+
+<textarea id="desc" placeholder="Mod Info"></textarea>
+
+<input id="link" placeholder="DevUploads Link">
+
+<button onclick="upload()">Publish App</button>
+
+</div>
+
+<script>
+
+async function upload(){
+
+const data={
+name:document.getElementById("name").value,
+icon:document.getElementById("icon").value,
+description:document.getElementById("desc").value,
+download:document.getElementById("link").value
+}
+
+await fetch("/api/apps",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify(data)
+})
+
+alert("App Uploaded!")
+
+}
+
+</script>
+
+</body>
+</html>
