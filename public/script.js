@@ -5,11 +5,13 @@ let APPS=[]
 async function loadApps(){
 
 const res=await fetch(API)
+
 const data=await res.json()
 
 APPS=data
 
 renderApps(data)
+
 renderFeatured(data)
 
 }
@@ -23,6 +25,7 @@ container.innerHTML=""
 list.forEach(app=>{
 
 container.innerHTML+=`
+
 <div class="card">
 
 <img src="${app.icon}">
@@ -34,14 +37,17 @@ container.innerHTML+=`
 <p>${app.description}</p>
 
 <div class="meta">
-⭐ ${app.rating} • ${app.version} • ${app.size}
-</div>
 
-<a class="btn" href="${app.download}" target="_blank">Download</a>
+⭐ ${app.rating || "4.5"} • ${app.version} • ${app.size}
 
 </div>
 
+<a class="btn" href="app.html?id=${app.id}">View</a>
+
 </div>
+
+</div>
+
 `
 
 })
@@ -71,6 +77,8 @@ renderApps(filtered)
 function renderFeatured(apps){
 
 const slider=document.getElementById("featured")
+
+slider.innerHTML=""
 
 apps.slice(0,5).forEach(app=>{
 

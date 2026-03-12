@@ -16,31 +16,21 @@ const container=document.getElementById("app")
 
 container.innerHTML=`
 
+<div style="padding:30px">
+
 <h1>${app.name}</h1>
 
-<img src="${app.icon}" class="icon">
+<img src="${app.icon}" style="width:120px;border-radius:20px">
 
 <p>${app.description}</p>
 
-⭐ Rating: ${app.rating}
+<p>⭐ ${app.rating}</p>
 
-<h3>Screenshots</h3>
+<p>${app.version} • ${app.size}</p>
 
-<div class="screens">
-
-${app.screenshots.map(s=>`<img src="${s}">`).join("")}
+<a class="btn" href="${app.download}">Download</a>
 
 </div>
-
-<h3>Version History</h3>
-
-<ul>
-
-${app.versions.map(v=>`<li>${v}</li>`).join("")}
-
-</ul>
-
-<a href="${app.download}" class="download">Download</a>
 
 `
 
