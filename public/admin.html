@@ -3,11 +3,57 @@
 <head>
 
 <title>Admin Panel</title>
+
 <link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+background:#0f1724;
+color:white;
+font-family:sans-serif;
+padding:30px;
+}
+
+.container{
+max-width:600px;
+margin:auto;
+background:#1c2333;
+padding:20px;
+border-radius:12px;
+}
+
+input,textarea{
+width:100%;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
+border:none;
+background:#2b3246;
+color:white;
+}
+
+button{
+margin-top:15px;
+padding:12px;
+background:#00ffa6;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+}
+
+button:hover{
+opacity:.9;
+}
+
+</style>
 
 </head>
 
 <body>
+
+<div class="container">
 
 <h1>Admin Panel</h1>
 
@@ -25,22 +71,26 @@
 
 <button onclick="upload()">Publish App</button>
 
+</div>
+
 <script>
 
-const API="https://YOUR_RENDER_URL/api/apps"
+const API = "https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
 
 async function upload(){
 
-const data={
-name:name.value,
-icon:icon.value,
-version:version.value,
-size:size.value,
-description:desc.value,
-download:download.value
+const data = {
+name: document.getElementById("name").value,
+icon: document.getElementById("icon").value,
+version: document.getElementById("version").value,
+size: document.getElementById("size").value,
+description: document.getElementById("desc").value,
+download: document.getElementById("download").value
 }
 
-await fetch(API,{
+try{
+
+const res = await fetch(API,{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -48,7 +98,17 @@ headers:{
 body:JSON.stringify(data)
 })
 
-alert("App Uploaded")
+const result = await res.json()
+
+alert("✅ App Uploaded Successfully")
+
+}catch(err){
+
+alert("❌ Upload Failed")
+
+console.log(err)
+
+}
 
 }
 
