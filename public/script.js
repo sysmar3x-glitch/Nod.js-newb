@@ -23,8 +23,7 @@ container.innerHTML=""
 list.forEach(app=>{
 
 container.innerHTML+=`
-
-<a href="app.html?id=${app.id}" class="card">
+<div class="card">
 
 <img src="${app.icon}">
 
@@ -35,17 +34,14 @@ container.innerHTML+=`
 <p>${app.description}</p>
 
 <div class="meta">
+⭐ ${app.rating} • ${app.version} • ${app.size}
+</div>
 
-⭐ ${app.rating}
-<span>${app.version}</span>
-<span>${app.size}</span>
+<a class="btn" href="${app.download}" target="_blank">Download</a>
 
 </div>
 
 </div>
-
-</a>
-
 `
 
 })
@@ -83,7 +79,8 @@ slider.innerHTML+=`
 <div class="slide">
 
 <img src="${app.icon}">
-<h3>${app.name}</h3>
+
+<h4>${app.name}</h4>
 
 </div>
 

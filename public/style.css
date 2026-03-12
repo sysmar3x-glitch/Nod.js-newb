@@ -1,73 +1,157 @@
 body{
-
 background:#0b1626;
+font-family:Arial,Helvetica,sans-serif;
+margin:0;
 color:white;
-font-family:sans-serif;
-
 }
+
+/* header */
 
 header{
-
-display:flex;
-justify-content:space-between;
-padding:20px;
-background:#101c30;
-
+padding:25px;
+text-align:center;
+background:#0f1f35;
 }
 
-.card{
+header h1{
+color:#19f5b5;
+margin:0;
+font-size:32px;
+}
 
+/* search */
+
+#search{
+width:90%;
+max-width:600px;
+margin:15px auto;
+display:block;
+padding:14px;
+border-radius:12px;
+border:none;
+font-size:16px;
+}
+
+/* categories */
+
+.categories{
+display:flex;
+justify-content:center;
+gap:10px;
+margin:20px;
+}
+
+.categories button{
+background:#19f5b5;
+border:none;
+padding:10px 18px;
+border-radius:10px;
+font-weight:bold;
+}
+
+/* cards */
+
+.card{
 display:flex;
 gap:15px;
-background:#1a2435;
+background:#17263f;
+padding:18px;
 margin:15px;
-padding:15px;
-border-radius:14px;
+border-radius:16px;
 text-decoration:none;
 color:white;
+box-shadow:0 6px 20px rgba(0,0,0,0.4);
+transition:0.3s;
+}
 
+.card:hover{
+transform:scale(1.02);
 }
 
 .card img{
-
 width:70px;
 height:70px;
-border-radius:12px;
-
+border-radius:14px;
+object-fit:cover;
 }
 
+.card h2{
+margin:0;
+font-size:20px;
+}
+
+.card p{
+margin:5px 0;
+color:#c9d1e0;
+font-size:14px;
+}
+
+.meta{
+font-size:14px;
+color:#9ab;
+}
+
+/* download button */
+
+.btn{
+display:inline-block;
+margin-top:10px;
+background:#19f5b5;
+color:black;
+padding:10px 18px;
+border-radius:10px;
+font-weight:bold;
+text-decoration:none;
+}
+
+/* featured slider */
+
 .slider{
-
 display:flex;
-overflow:auto;
 gap:15px;
+overflow-x:auto;
 padding:15px;
-
 }
 
 .slide{
-
-min-width:140px;
-background:#1a2435;
+min-width:160px;
+background:#17263f;
 padding:10px;
-border-radius:10px;
+border-radius:12px;
+text-align:center;
+}
 
+.slide img{
+width:100%;
+border-radius:12px;
+}
+
+/* app page */
+
+.icon{
+width:120px;
+border-radius:20px;
 }
 
 .download{
-
 display:inline-block;
-background:#00e6a8;
-padding:10px 20px;
-border-radius:8px;
+margin-top:20px;
+padding:14px 25px;
+background:#19f5b5;
 color:black;
+border-radius:12px;
+font-weight:bold;
+}
 
+/* screenshots */
+
+.screens{
+display:flex;
+gap:10px;
+overflow-x:auto;
 }
 
 .screens img{
-
 width:120px;
-margin:5px;
-border-radius:8px;
-
+border-radius:10px;
 }
