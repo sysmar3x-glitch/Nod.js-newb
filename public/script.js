@@ -1,28 +1,35 @@
-const API = "https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
+const API = "https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps";
 
 async function loadApps(){
 
+const container = document.getElementById("apps");
+
+container.innerHTML = "Loading apps...";
+
 try{
 
-const res = await fetch(API)
+const res = await fetch(API,{
+method:"GET",
+headers:{
+"Content-Type":"application/json"
+}
+});
 
-const apps = await res.json()
+const apps = await res.json();
 
-const container = document.getElementById("apps")
-
-if(!apps.length){
-container.innerHTML="<p>No apps uploaded yet</p>"
-return
+if(!apps || apps.length === 0){
+container.innerHTML = "<p>No apps uploaded yet</p>";
+return;
 }
 
-container.innerHTML=""
+container.innerHTML = "";
 
-apps.reverse().forEach(app=>{
+apps.reverse().forEach(app => {
 
 container.innerHTML += `
 <div class="card">
 
-<img src="${app.icon}">
+<img src="${app.icon}" alt="icon">
 
 <div class="info">
 
@@ -31,10 +38,8 @@ container.innerHTML += `
 <p>${app.description}</p>
 
 <div class="meta">
-
 <span>${app.version}</span>
 <span>${app.size}</span>
-
 </div>
 
 <a class="btn" href="${app.download}" target="_blank">Download</a>
@@ -42,16 +47,18 @@ container.innerHTML += `
 </div>
 
 </div>
-`
+`;
 
-})
+});
 
-}catch(e){
+}catch(err){
 
-document.getElementById("apps").innerHTML="<p>Failed to load apps</p>"
+console.error(err);
+
+container.innerHTML = "<p>Failed to load apps</p>";
 
 }
 
 }
 
-loadApps()
+document.addEventListener("DOMContentLoaded", loadApps);
