@@ -1,29 +1,34 @@
-const express = require("express")
-const cors = require("cors")
-const fs = require("fs")
+const express = require("express");
+const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 
-const app = express()
+const app = express();
 
-app.use(cors())
-app.use(express.json())
+app.use(cors());
+app.use(express.json());
 
-const DB = "apps.json"
+const DB = "apps.json";
 
+/* read apps */
 function readApps(){
-return JSON.parse(fs.readFileSync(DB))
+return JSON.parse(fs.readFileSync(DB));
 }
 
+/* save apps */
 function saveApps(data){
-fs.writeFileSync(DB, JSON.stringify(data,null,2))
+fs.writeFileSync(DB, JSON.stringify(data,null,2));
 }
 
+/* API to get apps */
 app.get("/api/apps",(req,res)=>{
-res.json(readApps())
-})
+res.json(readApps());
+});
 
+/* API to add app */
 app.post("/api/apps",(req,res)=>{
 
-const apps = readApps()
+const apps = readApps();
 
 const newApp = {
 id: Date.now(),
@@ -33,16 +38,25 @@ version: req.body.version,
 size: req.body.size,
 description: req.body.description,
 download: req.body.download
-}
+};
 
-apps.push(newApp)
+apps.push(newApp);
 
-saveApps(apps)
+saveApps(apps);
 
-res.json({status:"saved",app:newApp})
+res.json({status:"saved"});
+});
 
-})
+/* serve public folder */
+app.use(express.static(path.join(__dirname,"public")));
 
-app.listen(3000,()=>{
-console.log("Server running")
-})
+/* homepage */
+app.get("/",(req,res)=>{
+res.send("Backend running ✔");
+});
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT,()=>{
+console.log("Server running on port "+PORT);
+});
