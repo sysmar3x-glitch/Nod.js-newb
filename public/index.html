@@ -1,143 +1,23 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pro Premium APK</title><style>
+<!DOCTYPE html>
+<html>
+<head>
 
-body{
-font-family:Arial;
-margin:0;
-background:#0f0f0f;
-color:white;
-}
+<title>Pro Premium APK</title>
+<link rel="stylesheet" href="style.css">
 
-header{
-background:#121212;
-padding:16px;
-display:flex;
-align-items:center;
-}
+</head>
 
-.logo{
-font-size:22px;
-font-weight:bold;
-color:#00ffae;
-}
+<body>
 
-.container{
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
+<header>
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-gap:20px;
-}
+<h1>Pro Premium APK</h1>
 
-.card{
-background:#1c1c1c;
-border-radius:12px;
-padding:16px;
-transition:.2s;
-}
+</header>
 
-.card:hover{
-transform:scale(1.03);
-}
+<section id="apps"></section>
 
-.card img{
-width:80px;
-height:80px;
-border-radius:18px;
-}
+<script src="script.js"></script>
 
-.card h3{
-margin:10px 0 5px 0;
-font-size:18px;
-}
-
-.card p{
-font-size:14px;
-color:#bbb;
-}
-
-.download{
-display:inline-block;
-margin-top:12px;
-padding:10px 16px;
-background:#00ffae;
-color:black;
-border-radius:6px;
-text-decoration:none;
-font-weight:bold;
-}
-
-.loading{
-text-align:center;
-padding:40px;
-font-size:18px;
-}
-
-</style></head><body><header><div class="logo">Pro Premium APK</div></header><div class="container"><h2>Latest Apps</h2><div id="apps" class="grid">
-<div class="loading">Loading apps...</div>
-</div></div><script>
-
-const API_URL="https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
-
-async function loadApps(){
-
-try{
-
-const response=await fetch(API_URL)
-
-const apps=await response.json()
-
-const container=document.getElementById("apps")
-
-container.innerHTML=""
-
-if(apps.length===0){
-
-container.innerHTML="<div class='loading'>No apps uploaded yet</div>"
-
-return
-
-}
-
-apps.forEach(app=>{
-
-const card=document.createElement("div")
-
-card.className="card"
-
-card.innerHTML=`
-
-<img src="${app.icon}">
-
-<h3>${app.name}</h3>
-
-<p>${app.description}</p>
-
-<a class="download" href="${app.download}" target="_blank">
-Download
-</a>
-
-`
-
-container.appendChild(card)
-
-})
-
-}catch(err){
-
-document.getElementById("apps").innerHTML=
-"<div class='loading'>Failed to load apps</div>"
-
-}
-
-}
-
-loadApps()
-
-</script></body>
+</body>
 </html>

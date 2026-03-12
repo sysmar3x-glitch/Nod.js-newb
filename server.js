@@ -4,46 +4,53 @@ const fs = require("fs")
 
 const app = express()
 
-app.use(cors())   // IMPORTANT
-
+app.use(cors())
 app.use(express.json())
 app.use(express.static("public"))
 
-const DB_FILE="apps.json"
+const DB = "apps.json"
 
-if(!fs.existsSync(DB_FILE)){
-fs.writeFileSync(DB_FILE,"[]")
+function readApps(){
+return JSON.parse(fs.readFileSync(DB))
+}
+
+function saveApps(data){
+fs.writeFileSync(DB,JSON.stringify(data,null,2))
 }
 
 app.get("/api/apps",(req,res)=>{
-const apps = JSON.parse(fs.readFileSync(DB_FILE))
-res.json(apps)
+res.json(readApps())
 })
 
 app.post("/api/apps",(req,res)=>{
+const apps = readApps()
 
-const apps = JSON.parse(fs.readFileSync(DB_FILE))
-
-const newApp={
+const newApp = {
 id:Date.now(),
 name:req.body.name,
 icon:req.body.icon,
+version:req.body.version,
+size:req.body.size,
 description:req.body.description,
 download:req.body.download
 }
 
-apps.unshift(newApp)
+apps.push(newApp)
+saveApps(apps)
 
-fs.writeFileSync(DB_FILE,JSON.stringify(apps,null,2))
-
-res.json({status:"saved"})
-
+res.json({status:"ok"})
 })
 
-const PORT=process.env.PORT || 3000
+app.delete("/api/apps/:id",(req,res)=>{
+let apps = readApps()
 
-app.listen(PORT,()=>{
+apps = apps.filter(a=>a.id != req.params.id)
 
-console.log("Server running")
+saveApps(apps)
 
+res.json({status:"deleted"})
+})
+
+app.listen(3000,()=>{
+console.log("server running")
 })
