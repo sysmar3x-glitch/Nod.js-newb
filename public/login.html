@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+<h2>Admin Login</h2>
+
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<script>
+
+function login(){
+
+const u=document.getElementById("user").value
+const p=document.getElementById("pass").value
+
+if(
+(u==="proadmin-00" && p==="Kachabconfig00") ||
+(u==="proadmin-01" && p==="Iamaproguy-01")
+){
+
+localStorage.setItem("adminToken","secure")
+
+location.href="admin.html"
+
+}else{
+
+alert("Wrong login")
+
+}
+
+}
+
+</script>
+
+</body>
+</html>

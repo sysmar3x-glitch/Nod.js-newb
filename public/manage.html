@@ -1,0 +1,48 @@
+<h2>Manage Apps</h2>
+
+<div id="apps"></div>
+
+<script>
+
+const API="https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
+
+async function load(){
+
+const res=await fetch(API)
+const apps=await res.json()
+
+let html=""
+
+apps.forEach(app=>{
+
+html+=`
+
+<div>
+
+<img src="${app.icon}" width="50">
+
+${app.name}
+
+<button onclick="del('${app.id}')">Delete</button>
+
+</div>
+
+`
+
+})
+
+document.getElementById("apps").innerHTML=html
+
+}
+
+async function del(id){
+
+await fetch(API+"/"+id,{method:"DELETE"})
+
+load()
+
+}
+
+load()
+
+</script>

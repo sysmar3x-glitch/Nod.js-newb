@@ -1,19 +1,61 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-<title>Download App</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
 <div id="app"></div>
+<div id="screens"></div>
+<ul id="versions"></ul>
+<div id="related"></div>
 
-<script src="app.js"></script>
+<script>
 
-</body>
-</html>
+const API="https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
+
+const params=new URLSearchParams(location.search)
+
+const id=params.get("id")
+
+async function load(){
+
+const res=await fetch(API)
+const apps=await res.json()
+
+const app=apps.find(a=>a.id==id)
+
+document.getElementById("app").innerHTML=`
+<h2>${app.name}</h2>
+<img src="${app.icon}" width="100">
+<p>${app.description}</p>
+<a href="${app.download}">Download</a>
+`
+
+let sc=""
+
+app.screenshots.forEach(s=>{
+sc+=`<img src="${s}" height="200">`
+})
+
+document.getElementById("screens").innerHTML=sc
+
+let v=""
+
+app.versionHistory.forEach(ver=>{
+v+=`<li>${ver}</li>`
+})
+
+document.getElementById("versions").innerHTML=v
+
+const related=apps.filter(a=>a.category==app.category && a.id!=app.id).slice(0,4)
+
+let r=""
+
+related.forEach(a=>{
+r+=`<div>
+<img src="${a.icon}" width="40">
+<a href="app.html?id=${a.id}">${a.name}</a>
+</div>`
+})
+
+document.getElementById("related").innerHTML=r
+
+}
+
+load()
+
+</script>

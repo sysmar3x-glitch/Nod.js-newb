@@ -1,35 +1,55 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-
-<title>Admin Panel</title>
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
-<h1>Admin Panel</h1>
+<h2>Upload App</h2>
 
 <input id="name" placeholder="App Name">
-<input id="icon" type="file">
+<input id="icon" placeholder="Icon URL">
 <input id="version" placeholder="Version">
 <input id="size" placeholder="Size">
 <input id="rating" placeholder="Rating">
-<input id="category" placeholder="apps/games/mods">
+<input id="category" placeholder="Category">
 
-<textarea id="desc" placeholder="Description"></textarea>
+<input id="publisher" placeholder="Publisher">
+<input id="requirements" placeholder="Android version">
 
+<input id="telegram" placeholder="Telegram link">
 <input id="download" placeholder="Download link">
+
+<textarea id="desc" placeholder="Short description"></textarea>
+<textarea id="longdesc" placeholder="Full description"></textarea>
+
+<textarea id="screens" placeholder="Screenshot URLs comma separated"></textarea>
 
 <button onclick="upload()">Publish</button>
 
-<h2>Existing Apps</h2>
+<script>
 
-<div id="list"></div>
+const API="https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
 
-<script src="admin.js"></script>
+async function upload(){
 
-</body>
-</html>
+const data={
+name:name.value,
+icon:icon.value,
+version:version.value,
+size:size.value,
+rating:rating.value,
+category:category.value,
+publisher:publisher.value,
+requirements:requirements.value,
+description:desc.value,
+longdesc:longdesc.value,
+telegram:telegram.value,
+download:download.value,
+screenshots:screens.value.split(",").map(s=>s.trim())
+}
+
+await fetch(API,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify(data)
+})
+
+alert("App uploaded")
+
+}
+
+</script>

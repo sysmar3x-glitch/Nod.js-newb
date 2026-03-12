@@ -1,135 +1,60 @@
-const express = require("express")
-const cors = require("cors")
-const fs = require("fs")
-const path = require("path")
+const admin = require("firebase-admin");
+const express = require("express");
+const cors = require("cors");
+const app = express();
 
-const app = express()
+app.use(cors());
+app.use(express.json());
 
-app.use(cors())
-app.use(express.json())
+// 1. Initialize Firebase
+const serviceAccount = require("./serviceAccountKey.json");
 
-const DB = "apps.json"
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
-function readApps(){
+const db = admin.firestore();
+const appsRef = db.collection("apps"); // This is your "table"
 
-try{
+/* GET ALL APPS */
+app.get("/api/apps", async (req, res) => {
+    try {
+        const snapshot = await appsRef.get();
+        const apps = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        res.json(apps);
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
-return JSON.parse(fs.readFileSync(DB))
-
-}catch{
-
-return []
-
-}
-
-}
-
-function saveApps(data){
-
-fs.writeFileSync(DB, JSON.stringify(data,null,2))
-
-}
-
-/* GET APPS */
-
-app.get("/api/apps",(req,res)=>{
-
-res.json(readApps())
-
-})
-
-/* ADD APP */
-
-app.post("/api/apps",(req,res)=>{
-
-const apps = readApps()
-
-const newApp = {
-
-id: Date.now(),
-
-name: req.body.name,
-
-icon: req.body.icon,
-
-version: req.body.version,
-
-size: req.body.size,
-
-description: req.body.description,
-
-download: req.body.download,
-
-rating: req.body.rating || "4.5",
-
-category: req.body.category || "apps",
-
-screenshots: req.body.screenshots || [],
-
-versions: req.body.versions || [req.body.version]
-
-}
-
-apps.push(newApp)
-
-saveApps(apps)
-
-res.json({status:"saved"})
-
-})
+/* ADD NEW APP */
+app.post("/api/apps", async (req, res) => {
+    try {
+        const newApp = {
+            name: req.body.name,
+            icon: req.body.icon,
+            version: req.body.version,
+            size: req.body.size,
+            category: req.body.category,
+            download: req.body.download,
+            timestamp: admin.firestore.FieldValue.serverTimestamp()
+        };
+        const docRef = await appsRef.add(newApp);
+        res.json({ id: docRef.id, status: "success" });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
 /* DELETE APP */
+app.delete("/api/apps/:id", async (req, res) => {
+    try {
+        await appsRef.doc(req.params.id).delete();
+        res.json({ status: "deleted" });
+    } catch (error) {
+        res.status(500).send(error.message);
+    }
+});
 
-app.delete("/api/apps/:id",(req,res)=>{
-
-let apps = readApps()
-
-apps = apps.filter(a => a.id != req.params.id)
-
-saveApps(apps)
-
-res.json({status:"deleted"})
-
-})
-
-/* EDIT APP */
-
-app.put("/api/apps/:id",(req,res)=>{
-
-let apps = readApps()
-
-apps = apps.map(a => {
-
-if(a.id == req.params.id){
-
-return {...a,...req.body}
-
-}
-
-return a
-
-})
-
-saveApps(apps)
-
-res.json({status:"updated"})
-
-})
-
-/* SERVE FRONTEND */
-
-app.use(express.static(path.join(__dirname,"public")))
-
-app.get("/",(req,res)=>{
-
-res.send("Backend running ✔")
-
-})
-
-const PORT = process.env.PORT || 3000
-
-app.listen(PORT,()=>{
-
-console.log("Server running on port "+PORT)
-
-})
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -4,15 +4,25 @@ let APPS=[]
 
 async function loadApps(){
 
+try{
+
 const res=await fetch(API)
 
 const data=await res.json()
 
 APPS=data
 
-renderApps(data)
+renderApps(APPS)
 
-renderFeatured(data)
+renderFeatured(APPS)
+
+}catch(err){
+
+console.error("Failed to load apps",err)
+
+document.getElementById("apps").innerHTML="Failed to load apps"
+
+}
 
 }
 
@@ -20,7 +30,17 @@ function renderApps(list){
 
 const container=document.getElementById("apps")
 
+if(!container) return
+
 container.innerHTML=""
+
+if(list.length===0){
+
+container.innerHTML="<p>No apps found</p>"
+
+return
+
+}
 
 list.forEach(app=>{
 
@@ -28,17 +48,17 @@ container.innerHTML+=`
 
 <div class="card">
 
-<img src="${app.icon}">
+<img src="${app.icon || 'logo.png'}">
 
 <div>
 
-<h2>${app.name}</h2>
+<h2>${app.name || 'Unknown App'}</h2>
 
-<p>${app.description}</p>
+<p>${app.description || ''}</p>
 
 <div class="meta">
 
-⭐ ${app.rating || "4.5"} • ${app.version} • ${app.size}
+⭐ ${app.rating || "4.5"} • ${app.version || "1.0"} • ${app.size || ""}
 
 </div>
 
@@ -58,7 +78,11 @@ function searchApps(){
 
 const text=document.getElementById("search").value.toLowerCase()
 
-const filtered=APPS.filter(a=>a.name.toLowerCase().includes(text))
+const filtered=APPS.filter(a=>
+
+(a.name || "").toLowerCase().includes(text)
+
+)
 
 renderApps(filtered)
 
@@ -66,7 +90,13 @@ renderApps(filtered)
 
 function filterCategory(cat){
 
-if(cat==="all") return renderApps(APPS)
+if(cat==="all"){
+
+renderApps(APPS)
+
+return
+
+}
 
 const filtered=APPS.filter(a=>a.category===cat)
 
@@ -78,6 +108,8 @@ function renderFeatured(apps){
 
 const slider=document.getElementById("featured")
 
+if(!slider) return
+
 slider.innerHTML=""
 
 apps.slice(0,5).forEach(app=>{
@@ -86,9 +118,9 @@ slider.innerHTML+=`
 
 <div class="slide">
 
-<img src="${app.icon}">
+<img src="${app.icon || 'logo.png'}">
 
-<h4>${app.name}</h4>
+<h4>${app.name || ''}</h4>
 
 </div>
 
