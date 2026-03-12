@@ -4,86 +4,13 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <title>Pro Premium APK</title>
 
+<meta name="description" content="Download premium APK mods for Android">
+
 <link rel="stylesheet" href="style.css">
-
-<style>
-
-body{
-background:#0f1724;
-color:white;
-font-family:sans-serif;
-margin:0;
-}
-
-header{
-padding:20px;
-font-size:24px;
-color:#00ffa6;
-}
-
-#apps{
-padding:20px;
-}
-
-.card{
-
-display:flex;
-gap:15px;
-
-background:#1c2333;
-
-padding:20px;
-
-border-radius:14px;
-
-margin-bottom:20px;
-
-}
-
-.card img{
-width:80px;
-height:80px;
-border-radius:20px;
-}
-
-.info{
-flex:1
-}
-
-.info h2{
-margin:0;
-}
-
-.meta{
-margin-top:8px;
-color:#aaa;
-}
-
-.btn{
-
-display:inline-block;
-
-margin-top:10px;
-
-background:#00ffa6;
-
-color:black;
-
-padding:8px 16px;
-
-border-radius:8px;
-
-text-decoration:none;
-
-font-weight:bold;
-
-}
-
-</style>
 
 </head>
 
@@ -93,16 +20,24 @@ font-weight:bold;
 
 <h1>Pro Premium APK</h1>
 
+<input id="search" placeholder="Search apps..." onkeyup="searchApps()">
+
 </header>
 
-<section id="apps">
+<div class="slider" id="featured"></div>
 
-<p>Loading apps...</p>
+<div class="categories">
 
-</section>
+<button onclick="filterCategory('all')">All</button>
+<button onclick="filterCategory('apps')">Apps</button>
+<button onclick="filterCategory('games')">Games</button>
+<button onclick="filterCategory('mods')">Mods</button>
+
+</div>
+
+<section id="apps"></section>
 
 <script src="script.js"></script>
 
 </body>
-
 </html>

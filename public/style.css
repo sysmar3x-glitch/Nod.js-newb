@@ -1,101 +1,73 @@
 body{
-background:#0f1724;
-font-family:sans-serif;
+
+background:#0b1626;
 color:white;
-margin:0
+font-family:sans-serif;
+
 }
 
 header{
-padding:20px;
-font-size:22px;
-color:#00ffa6
-}
 
-#apps{
-padding:20px
+display:flex;
+justify-content:space-between;
+padding:20px;
+background:#101c30;
+
 }
 
 .card{
 
 display:flex;
 gap:15px;
-
-background:#1c2333;
-
-padding:20px;
-
+background:#1a2435;
+margin:15px;
+padding:15px;
 border-radius:14px;
-
-margin-bottom:20px;
+text-decoration:none;
+color:white;
 
 }
 
 .card img{
 
-width:80px;
-height:80px;
-
-border-radius:20px;
+width:70px;
+height:70px;
+border-radius:12px;
 
 }
 
-.info{
-flex:1
+.slider{
+
+display:flex;
+overflow:auto;
+gap:15px;
+padding:15px;
+
 }
 
-.info h2{
-margin:0
+.slide{
+
+min-width:140px;
+background:#1a2435;
+padding:10px;
+border-radius:10px;
+
 }
 
-.meta{
-margin-top:8px;
-color:#aaa
-}
-
-.btn{
+.download{
 
 display:inline-block;
-
-margin-top:10px;
-
-background:#00ffa6;
-
+background:#00e6a8;
+padding:10px 20px;
+border-radius:8px;
 color:black;
 
-padding:8px 16px;
+}
 
+.screens img{
+
+width:120px;
+margin:5px;
 border-radius:8px;
-
-text-decoration:none;
-
-font-weight:bold
-
-}
-
-input,textarea{
-
-width:100%;
-
-padding:12px;
-
-margin:10px 0;
-
-border-radius:10px;
-
-border:none;
-
-}
-
-button{
-
-background:#00ffa6;
-
-padding:12px;
-
-border:none;
-
-border-radius:10px;
-
-font-weight:bold
 
 }

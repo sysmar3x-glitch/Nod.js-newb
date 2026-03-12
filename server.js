@@ -1,62 +1,135 @@
-const express = require("express");
-const cors = require("cors");
-const fs = require("fs");
-const path = require("path");
+const express = require("express")
+const cors = require("cors")
+const fs = require("fs")
+const path = require("path")
 
-const app = express();
+const app = express()
 
-app.use(cors());
-app.use(express.json());
+app.use(cors())
+app.use(express.json())
 
-const DB = "apps.json";
+const DB = "apps.json"
 
-/* read apps */
 function readApps(){
-return JSON.parse(fs.readFileSync(DB));
+
+try{
+
+return JSON.parse(fs.readFileSync(DB))
+
+}catch{
+
+return []
+
 }
 
-/* save apps */
+}
+
 function saveApps(data){
-fs.writeFileSync(DB, JSON.stringify(data,null,2));
+
+fs.writeFileSync(DB, JSON.stringify(data,null,2))
+
 }
 
-/* API to get apps */
-app.get("/api/apps",(req,res)=>{
-res.json(readApps());
-});
+/* GET APPS */
 
-/* API to add app */
+app.get("/api/apps",(req,res)=>{
+
+res.json(readApps())
+
+})
+
+/* ADD APP */
+
 app.post("/api/apps",(req,res)=>{
 
-const apps = readApps();
+const apps = readApps()
 
 const newApp = {
+
 id: Date.now(),
+
 name: req.body.name,
+
 icon: req.body.icon,
+
 version: req.body.version,
+
 size: req.body.size,
+
 description: req.body.description,
-download: req.body.download
-};
 
-apps.push(newApp);
+download: req.body.download,
 
-saveApps(apps);
+rating: req.body.rating || "4.5",
 
-res.json({status:"saved"});
-});
+category: req.body.category || "apps",
 
-/* serve public folder */
-app.use(express.static(path.join(__dirname,"public")));
+screenshots: req.body.screenshots || [],
 
-/* homepage */
+versions: req.body.versions || [req.body.version]
+
+}
+
+apps.push(newApp)
+
+saveApps(apps)
+
+res.json({status:"saved"})
+
+})
+
+/* DELETE APP */
+
+app.delete("/api/apps/:id",(req,res)=>{
+
+let apps = readApps()
+
+apps = apps.filter(a => a.id != req.params.id)
+
+saveApps(apps)
+
+res.json({status:"deleted"})
+
+})
+
+/* EDIT APP */
+
+app.put("/api/apps/:id",(req,res)=>{
+
+let apps = readApps()
+
+apps = apps.map(a => {
+
+if(a.id == req.params.id){
+
+return {...a,...req.body}
+
+}
+
+return a
+
+})
+
+saveApps(apps)
+
+res.json({status:"updated"})
+
+})
+
+/* SERVE FRONTEND */
+
+app.use(express.static(path.join(__dirname,"public")))
+
 app.get("/",(req,res)=>{
-res.send("Backend running ✔");
-});
 
-const PORT = process.env.PORT || 3000;
+res.send("Backend running ✔")
+
+})
+
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT,()=>{
-console.log("Server running on port "+PORT);
-});
+
+console.log("Server running on port "+PORT)
+
+})

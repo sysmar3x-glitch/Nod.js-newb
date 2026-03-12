@@ -1,64 +1,96 @@
-const API = "https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps";
+const API="https://pro-premium-apk-01-project-hosting-1.onrender.com/api/apps"
+
+let APPS=[]
 
 async function loadApps(){
 
-const container = document.getElementById("apps");
+const res=await fetch(API)
+const data=await res.json()
 
-container.innerHTML = "Loading apps...";
+APPS=data
 
-try{
+renderApps(data)
+renderFeatured(data)
 
-const res = await fetch(API,{
-method:"GET",
-headers:{
-"Content-Type":"application/json"
-}
-});
-
-const apps = await res.json();
-
-if(!apps || apps.length === 0){
-container.innerHTML = "<p>No apps uploaded yet</p>";
-return;
 }
 
-container.innerHTML = "";
+function renderApps(list){
 
-apps.reverse().forEach(app => {
+const container=document.getElementById("apps")
 
-container.innerHTML += `
-<div class="card">
+container.innerHTML=""
 
-<img src="${app.icon}" alt="icon">
+list.forEach(app=>{
 
-<div class="info">
+container.innerHTML+=`
+
+<a href="app.html?id=${app.id}" class="card">
+
+<img src="${app.icon}">
+
+<div>
 
 <h2>${app.name}</h2>
 
 <p>${app.description}</p>
 
 <div class="meta">
+
+⭐ ${app.rating}
 <span>${app.version}</span>
 <span>${app.size}</span>
-</div>
-
-<a class="btn" href="${app.download}" target="_blank">Download</a>
 
 </div>
 
 </div>
-`;
 
-});
+</a>
 
-}catch(err){
+`
 
-console.error(err);
-
-container.innerHTML = "<p>Failed to load apps</p>";
+})
 
 }
 
+function searchApps(){
+
+const text=document.getElementById("search").value.toLowerCase()
+
+const filtered=APPS.filter(a=>a.name.toLowerCase().includes(text))
+
+renderApps(filtered)
+
 }
 
-document.addEventListener("DOMContentLoaded", loadApps);
+function filterCategory(cat){
+
+if(cat==="all") return renderApps(APPS)
+
+const filtered=APPS.filter(a=>a.category===cat)
+
+renderApps(filtered)
+
+}
+
+function renderFeatured(apps){
+
+const slider=document.getElementById("featured")
+
+apps.slice(0,5).forEach(app=>{
+
+slider.innerHTML+=`
+
+<div class="slide">
+
+<img src="${app.icon}">
+<h3>${app.name}</h3>
+
+</div>
+
+`
+
+})
+
+}
+
+loadApps()
